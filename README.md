@@ -6,7 +6,7 @@ It's not so fun but it was fun create it.
 ![Captura1](https://user-images.githubusercontent.com/54743642/169498794-9969a3db-040d-4c40-a04c-0e5d888b190d.PNG)
 
 ### And to create is like this
-![Captura2](https://user-images.githubusercontent.com/54743642/169498962-7759cdc2-2604-40c7-96a4-d77c91daa70b.PNG)
+![Captura2](https://user-images.githubusercontent.com/54743642/169499472-83b55819-27ed-4b5a-8ee0-96e1ed317926.PNG)
 
 
 ## Start Project
@@ -21,9 +21,7 @@ npm run serve
 ### Start server
 ```
 cd server
-```
-then
-```
+npm install
 npm run dev
 ```
 
