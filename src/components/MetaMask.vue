@@ -7,14 +7,12 @@
 
 <script lang="ts">
 import { defineComponent, handleError } from '@vue/runtime-core';
-import {ConnectInfo} from '@/interfaces/connectMetaMask';
 
 export default defineComponent({
   name: 'MetaMask',
   data() {
     return {
       ethereum:null,
-      connectInfo: {} as ConnectInfo,
       currentAccount:''
     }
   },
