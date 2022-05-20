@@ -4,8 +4,8 @@
 
     <form @submit.prevent="HandleUpdate" class="card-body">
       <h4 class="text-center">Update Movie</h4>
-      <img v-if="new_image" :src="''+myImage.display" class="img-fluid" alt="movieImage" />
-      <img v-else :src="CheckImage() ?('http://localhost:3000/'+myImage.display) : no_image"  class="img-fluid" alt="movieImage"
+      <img v-if="new_image" :src="''+myImage.display" class="img-fluid mb-3" alt="movieImage" />
+      <img v-else :src="CheckImage() ?('http://localhost:3000/'+myImage.display) : no_image"  class="img-fluid mb-3" alt="movieImage"
           />
           <div class="row" id="input_file">
               <input
@@ -21,6 +21,8 @@
       <input v-model="currentMovie.title" type="text" placeholder="Write a title" class="form-control mb-3" autofocus>
       <textarea v-model="currentMovie.description" rows="3" id="" placeholder="Write a description"
         class="form-control mb-3"></textarea>
+      <p :class="'mb-3 text-'+(currentError.status<300?'success':'danger')">{{ currentError.message }}</p>
+
       <button class="btn btn-primary w-100">Update</button>
     </form>
       <div class="card-footer text-muted">
@@ -46,7 +48,11 @@ export default defineComponent({
       currentMovie: {} as Movie,
       myImage:{} as MyImage,
       no_image: no_image,
-      new_image:false
+      new_image:false,
+      currentError:{
+        message:'',
+        status:0,
+      },
 
     }
   },
@@ -96,9 +102,14 @@ export default defineComponent({
         formData.append("title", this.currentMovie.title);
         formData.append("description", this.currentMovie.description);
         const { data, status } = await UpdateMovie(this.$route.params.id, formData);
-        if (status != 200) {
-          console.log('error');
-          return;
+        this.currentError.message=data.message;
+        this.currentError.status=status;
+        if (status !=201){
+          console.log('error');        
+        }else{
+          setTimeout(() => {
+            this.$router.push({name:"movies"})
+          }, 250);
         }
       this.$router.push({name:"movies"})
 
@@ -113,7 +124,6 @@ export default defineComponent({
           return;
         }
         this.$router.push({ name: "movies" })
-
       }
     }
 
@@ -122,6 +132,7 @@ export default defineComponent({
     if (typeof this.$route.params.id === "string") {
       this.LoadMovie(this.$route.params.id);
     }
+    
   },
 });
 </script>

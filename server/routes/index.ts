@@ -3,9 +3,7 @@ import Movie from "../models/Movies";
 import path from "path";
 import fs from "fs-extra";
 
-// const multer = require("multer");
 import upload from "../libs/storage";
-// const upload=multer({dest:'images/'})
 
 const router = Router();
 
@@ -22,16 +20,17 @@ router.post("/movies", upload.single("imageMovie"), async (req, res) => {
       const imgPath=req.file?req.file.path:'';
       const { title, description } = req.body;
     if (req.file && title && description ) {
-      console.log('imgPath',imgPath);
       const movie = new Movie({
         title:title,
         description:description,
         imgPath: imgPath,
       });
       await movie.save();
-      res.json(movie);
+      // res.json(movie);
+      return res.status(201).json({ message: "successfully created",movie });
+
     } else {
-      return res.status(404).send("Error; No image sent");
+      return res.status(400).json({ message: "No image sent" });
     }
   } catch (error) {
     return res.status(500).send(error);
@@ -87,7 +86,7 @@ router.put("/movies/:id",upload.single("imageMovie"), async (req, res) => {
     if (!movieUpdated) {
       return res.status(404).json({ message: "movie not found" });
     }
-    res.json(movieUpdated);
+    return res.status(201).json({ message: "successfully created"});
   } catch (error) {
     return res.status(500).send(error);
   }

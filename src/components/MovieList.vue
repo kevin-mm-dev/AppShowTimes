@@ -1,13 +1,18 @@
 <template>
   <div class="row">
+    <div class="container" style="text-align: center;">
+      <img v-if="movies.length<=0" :src="background" alt="background" class="background">
+    </div>
     <div class="col-md-4 p-4"  style="cursor: pointer" v-for="(item,index) in movies" :key="index">
-      <div class="card card-img"  @click="$router.push(`/movies/${item._id}`)">
+      <div class="card card-img bg-dark text-white"  @click="$router.push(`/movies/${item._id}`)">
           <div class="card-header">
-            {{ item.title }}
+              {{ item.title }}
           </div>
-          <img :src="item.imgPath?('http://localhost:3000/'+item.imgPath):no_image" alt="movieImagen" class="img-card-top w-100">
+          <img :src="item.imgPath?('http://localhost:3000/'+item.imgPath):noImage" alt="movieImagen" class="img-card-top w-100">
           <div class="card-body">
-            {{ item.description }}
+            <p class="card-text">
+              {{ item.description }}
+            </p>
           </div>
       </div>
     </div>
@@ -15,7 +20,8 @@
 </template>
 
 <script lang="ts">
-import no_image from "@/assets/no-image.png";
+import background from "@/assets/background.png";
+import noImage from "@/assets/no-image.png";
 import { Movie } from '@/interfaces/movie';
 import { GetMovies } from '@/services/MovieService';
 import { defineComponent } from 'vue';
@@ -25,7 +31,8 @@ export default defineComponent({
   data() {
     return {
       movies: [] as Movie[],
-      no_image: no_image,
+      background: background,
+      noImage: noImage,
 
     }
   },
@@ -53,5 +60,8 @@ export default defineComponent({
 }
 .card-img img{
   max-height: 185px;
+}
+.background{
+  width: 60%;
 }
 </style>

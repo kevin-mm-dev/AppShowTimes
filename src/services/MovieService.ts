@@ -14,7 +14,7 @@ export const GetMovie = async (id: string): Promise<AxiosResponse<Movie>> =>
 export const UpdateMovie = async (
   id: string,
   newMovie: FormData
-): Promise<AxiosResponse<Movie>> => await axios.put(`/movies/${id}`, newMovie);
+): Promise<AxiosResponse> => await axios.put(`/movies/${id}`, newMovie);
 
 export const DeleteMovie = async (id: string): Promise<AxiosResponse> =>
   await axios.delete(`/movies/${id}`);

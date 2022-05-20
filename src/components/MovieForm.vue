@@ -1,10 +1,11 @@
 <template>
+<div class="container">
   <div class="col-md-4 offset-md-4">
     <form @submit.prevent="SaveMovie" class="card card-body">
       <h4 class="text-center">Create Movie</h4>
         <img
-          :src="myImage.display != null ? myImage.display : no_image"
-              class="img-fluid"
+          :src="myImage.display != null ? myImage.display : noImage"
+              class="img-fluid mb-3"
               alt="movieImage"
           />
           <div class="row" id="input_file">
@@ -20,17 +21,26 @@
           </div>
       <input v-model="movie.title" type="text" placeholder="Write a title" class="form-control mb-3" autofocus>
       <textarea v-model="movie.description" rows="3" id="" placeholder="Write a description" class="form-control mb-3"></textarea>
-      <button class="btn btn-primary" :disabled="!movie.title || !movie.description">Save</button>
+
+
+      <p :class="'mb-3 text-'+(currentError.status<300?'success':'danger')">{{ currentError.message }}</p>
+
+      
+      <button class="btn btn-primary" :disabled="!movie.title || !movie.description || !myImage.data">Save</button>
     </form>
   </div>
+    
+</div>
+
 </template>
 
 <script lang="ts">
-import no_image from "@/assets/no-image.png";
+import noImage from "@/assets/no-image.png";
 import { defineComponent } from 'vue';
 import {Movie} from '@/interfaces/movie';
 import {MyImage} from '@/interfaces/myImage';
 import {CreateMovie} from '@/services/MovieService';
+
 
 export default defineComponent({
   name: 'App',
@@ -38,21 +48,43 @@ export default defineComponent({
     return {
       movie:{} as Movie,
       myImage:{} as MyImage,
-      no_image: no_image,
+      noImage: noImage,
+      currentError:{
+        message:'',
+        status:0,
+      },
+      errors:{
+        400:{
+          is_active:false,
+          message:'Make sure you send valid information.'
+        },
+        404:{
+          is_active:false,
+          message:'Not Found'
+        },
+        500:{
+          is_active:false,
+          message:'The server has encountered a situation that it does not know how to handle.'
+        }
+      }
     }
   },
   methods:{
-    
     async SaveMovie(){
       let formData = new FormData();
       formData.append("imageMovie", this.myImage.data);
       formData.append("title", this.movie.title);
       formData.append("description", this.movie.description);
       const {data,status}= await CreateMovie(formData);
-      if (status !=200){
+      this.currentError.message=data.message;
+      this.currentError.status=status;
+      if (status !=201){
         console.log('error');        
+      }else{
+        setTimeout(() => {
+          this.$router.push({name:"movies"})
+        }, 250);
       }
-      this.$router.push({name:"movies"})
     },
     async ImageHandler(e:any) {
       if (e) {                    

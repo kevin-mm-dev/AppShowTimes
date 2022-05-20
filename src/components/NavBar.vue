@@ -10,6 +10,9 @@
           <li class="nav-item">
             <router-link class="nav-link" to="/movies/new">Create Movie</router-link>
           </li>
+          <li class="nav-item">
+            <meta-mask></meta-mask>
+          </li>
         </ul>
       </div>
     </div>
@@ -17,9 +20,14 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from '@vue/runtime-core'
-
+import { defineComponent, handleError } from '@vue/runtime-core';
+import MetaMask from '@/components/MetaMask.vue';
 export default defineComponent({
-  name: 'NavBar'
+  name: 'NavBar',
+  components: {
+    MetaMask
+  }
+
 })
+
 </script>
