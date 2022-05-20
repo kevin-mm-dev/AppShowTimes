@@ -16,7 +16,7 @@
               id="img_perfil"
               @change="ImageHandler"
               accept="image/*"
-              class="form-control"
+              class="form-control mb-3"
               />
           </div>
       <input v-model="movie.title" type="text" placeholder="Write a title" class="form-control mb-3" autofocus>
